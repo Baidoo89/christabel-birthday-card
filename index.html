@@ -21,17 +21,18 @@
         <div class="welcome-screen" id="welcomeScreen">
             <h1 class="glowing-text">Something Special Awaits...</h1>
             <p class="subtitle">Click below to begin</p>
+            <!-- Countdown Section (now in welcome screen) -->
+            <div class="countdown-section" id="countdownSection">
+                <h2>Birthday Countdown</h2>
+                <div id="countdown" class="countdown"></div>
+            </div>
             <button class="start-btn" id="startBtn">Open Your Gift 🎁</button>
         </div>
 
         <!-- Main Birthday Card -->
         <div class="birthday-card hidden" id="birthdayCard">
             
-            <!-- Countdown Section -->
-            <div class="countdown-section" id="countdownSection">
-                <h2>Birthday Countdown</h2>
-                <div id="countdown" class="countdown"></div>
-            </div>
+
 
             <!-- Main Message -->
             <div class="main-content">
@@ -90,7 +91,7 @@
                             <img src="photo4.svg" alt="Our memory 4">
                         </div>
                     </div>
-                    <p class="gallery-note">💡 Replace photo-placeholder with your favorite photos!</p>
+                    <p class="gallery-note">💡 Every photo here is a memory of how much joy and beauty you bring into my life. You make every moment special! 💖</p>
                 </div>
 
                 <!-- Interactive Buttons -->
@@ -132,7 +133,7 @@
                 </div>
 
                 <!-- Audio Player (Hidden) -->
-                <audio id="birthdaySong" src="birthday_song.mp3" preload="auto" playsinline loop></audio>
+                <audio id="birthdaySong" src="birthday_song.mp3" preload="auto" playsinline></audio>
             </div>
         </div>
     </div>

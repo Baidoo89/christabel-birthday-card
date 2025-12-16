@@ -6,12 +6,33 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
+// Try to play the birthday song, fallback to melody if file missing
+function tryPlayBirthdayMusic() {
+    const audio = document.getElementById('birthdaySong');
+    if (audio) {
+        // Check if file exists by trying to play and listening for error
+        let triedFallback = false;
+        const fallback = () => {
+            if (!triedFallback) {
+                triedFallback = true;
+                playHappyBirthdayMelodyFallback();
+            }
+        };
+        audio.onerror = fallback;
+        audio.currentTime = 0;
+        audio.volume = 0.9;
+        audio.play().catch(fallback);
+    } else {
+        playHappyBirthdayMelodyFallback();
+    }
+}
+
 // ========================================
 // CONFIGURATION
 // ========================================
 
 // Set the birthday moment once here (Month is 0-indexed)
-const BIRTHDAY_DATE = new Date(2025, 11, 16, 0, 0, 0);
+const BIRTHDAY_DATE = new Date(2025, 11, 17, 0, 0, 0);
 
 // Toggle lock mode: when true, main content stays locked until BIRTHDAY_DATE
 // We'll leave this false until you confirm everything, then switch to true.
@@ -66,7 +87,17 @@ function createFloatingHearts() {
 function setupEventListeners() {
     // Start button
     const startBtn = document.getElementById('startBtn');
-    if (startBtn) startBtn.addEventListener('click', showBirthdayCard);
+    if (startBtn) {
+        startBtn.disabled = true;
+        startBtn.style.opacity = 0.6;
+        startBtn.title = 'Please wait for the countdown to finish!';
+        startBtn.addEventListener('click', function() {
+            if (!startBtn.disabled) {
+                tryPlayBirthdayMusic();
+                showBirthdayCard();
+            }
+        });
+    }
     
     // Cake interaction
     const cakeImg = document.getElementById('cakeImg');
@@ -117,7 +148,23 @@ function showBirthdayCard() {
         birthdayCard.classList.remove('hidden');
         launchConfetti();
         playSound('celebration');
-        // Don't play song here - it will only play at midnight celebration
+        // Play birthday song when card is opened
+        const audio = document.getElementById('birthdaySong');
+        if (audio) {
+            audio.currentTime = 0;
+            audio.volume = 0.9;
+            audio.play().catch(() => {
+                // If blocked, try again on next user interaction
+                const tryPlay = () => {
+                    audio.play().then(() => {
+                        window.removeEventListener('click', tryPlay);
+                        window.removeEventListener('keydown', tryPlay);
+                    }).catch(() => {});
+                };
+                window.addEventListener('click', tryPlay);
+                window.addEventListener('keydown', tryPlay);
+            });
+        }
         applyLockState();
     }, 500);
 }
@@ -137,6 +184,15 @@ document.head.appendChild(style);
 // ========================================
 
 function setupCountdown() {
+        // Helper to enable the start button
+        function enableStartBtn() {
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.style.opacity = 1;
+                startBtn.title = '';
+            }
+        }
     const birthday = BIRTHDAY_DATE;
     const countdownElement = document.getElementById('countdown');
     const countdownSection = document.getElementById('countdownSection');
@@ -164,15 +220,23 @@ function setupCountdown() {
             // Force the melody to play
             playHappyBirthdayMelodyFallback();
             
-            // Also try audio element
+            // Also try audio element with autoplay workaround
             const audio = document.getElementById('birthdaySong');
             if (audio) {
                 console.log('Audio element found, attempting play...');
                 audio.currentTime = 0;
                 audio.volume = 0.9;
-                audio.play()
-                    .then(() => console.log('Audio file playing!'))
-                    .catch((err) => console.log('Audio blocked:', err));
+                audio.play().catch(() => {
+                    // If blocked, try again on next user interaction
+                    const tryPlay = () => {
+                        audio.play().then(() => {
+                            window.removeEventListener('click', tryPlay);
+                            window.removeEventListener('keydown', tryPlay);
+                        }).catch(() => {});
+                    };
+                    window.addEventListener('click', tryPlay);
+                    window.addEventListener('keydown', tryPlay);
+                });
             } else {
                 console.log('No audio element found');
             }
@@ -185,6 +249,7 @@ function setupCountdown() {
         
         if (diff <= 0) {
             countdownSection.innerHTML = '<h2 class="glowing-text">🎉 IT\'S YOUR BIRTHDAY! 🎉</h2>';
+            enableStartBtn();
             celebrateBirthday();
             return;
         }
@@ -892,14 +957,37 @@ function addGalleryFallbacks() {
                 
                 const now = audioContext.currentTime;
                 
-                // Happy Birthday melody - first line
+                // Full Happy Birthday melody (G major)
                 const melody = [
-                    { freq: 392, dur: 0.4 },   // G - Hap
-                    { freq: 392, dur: 0.4 },   // G - py
-                    { freq: 440, dur: 0.8 },   // A - Birth
-                    { freq: 392, dur: 0.8 },   // G - day
-                    { freq: 523, dur: 0.8 },   // C - to
-                    { freq: 494, dur: 1.6 },   // B - you
+                    // Line 1: Happy birthday to you
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 440, dur: 0.8 },   // A
+                    { freq: 392, dur: 0.8 },   // G
+                    { freq: 523, dur: 0.8 },   // C
+                    { freq: 494, dur: 1.2 },   // B
+                    // Line 2: Happy birthday to you
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 440, dur: 0.8 },   // A
+                    { freq: 392, dur: 0.8 },   // G
+                    { freq: 587, dur: 0.8 },   // D
+                    { freq: 523, dur: 1.2 },   // C
+                    // Line 3: Happy birthday dear [Name]
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 392, dur: 0.4 },   // G
+                    { freq: 784, dur: 0.8 },   // G (octave)
+                    { freq: 659, dur: 0.8 },   // E
+                    { freq: 523, dur: 0.8 },   // C
+                    { freq: 494, dur: 0.8 },   // B
+                    { freq: 440, dur: 1.2 },   // A
+                    // Line 4: Happy birthday to you
+                    { freq: 698, dur: 0.4 },   // F
+                    { freq: 698, dur: 0.4 },   // F
+                    { freq: 659, dur: 0.8 },   // E
+                    { freq: 523, dur: 0.8 },   // C
+                    { freq: 587, dur: 0.8 },   // D
+                    { freq: 523, dur: 1.6 },   // C
                 ];
                 
                 let time = 0;

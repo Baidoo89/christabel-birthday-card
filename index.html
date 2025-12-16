@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Christabel! 🎂</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="stars"></div>
+    <div class="hearts-container" id="hearts"></div>
+    
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Main Card Container -->
+    <div class="card-container" id="cardContainer">
+        
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1 class="glowing-text">Something Special Awaits...</h1>
+            <p class="subtitle">Click below to begin</p>
+            <button class="start-btn" id="startBtn">Open Your Gift 🎁</button>
+        </div>
+
+        <!-- Main Birthday Card -->
+        <div class="birthday-card hidden" id="birthdayCard">
+            
+            <!-- Countdown Section -->
+            <div class="countdown-section" id="countdownSection">
+                <h2>Birthday Countdown</h2>
+                <div id="countdown" class="countdown"></div>
+            </div>
+
+            <!-- Main Message -->
+            <div class="main-content">
+                <h1 class="birthday-title">
+                    Happy Birthday
+                    <span class="name-highlight">Christabel</span>! 🎉
+                </h1>
+                
+                <!-- Cake Image with Animation -->
+                <div class="cake-container">
+                    <div class="candle-container">
+                        <div class="candle">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame"></div>
+                        </div>
+                    </div>
+                    <img src="cake.png" alt="Birthday Cake" class="cake-img" id="cakeImg">
+                    <p class="cake-instruction">💨 Click the cake to make a wish!</p>
+                </div>
+
+                <!-- Love Messages -->
+                <div class="message-box">
+                    <p class="message">
+                        🌟 Today is all about celebrating YOU! 🌟
+                    </p>
+                    <p class="message">
+                        Every moment with you is a gift. You make my world brighter,
+                        my days better, and my heart fuller. ❤️
+                    </p>
+                    <p class="message">
+                        Here's to another amazing year of adventures, laughter,
+                        and unforgettable memories together! 🎊
+                    </p>
+                </div>
+
+                <!-- Photo Gallery -->
+                <div class="photo-gallery">
+                    <h3>Our Beautiful Moments 📸</h3>
+                    <div class="gallery-grid">
+                        <div class="photo-slot">
+                            <!-- Local placeholders: swap to your own photos anytime -->
+                            <img src="photo1.svg" alt="Our memory 1">
+                        </div>
+                        <div class="photo-slot">
+                            <img src="photo2.svg" alt="Our memory 2">
+                        </div>
+                        <div class="photo-slot">
+                            <img src="HBD.jpeg" alt="Our memory 3">
+                        </div>
+                        <div class="photo-slot">
+                            <img src="photo4.svg" alt="Our memory 4">
+                        </div>
+                    </div>
+                    <p class="gallery-note">💡 Replace photo-placeholder with your favorite photos!</p>
+                </div>
+
+                <!-- Interactive Buttons -->
+                <div class="button-group">
+                    <button class="action-btn" id="musicBtn">
+                        🎵 Play Birthday Song
+                    </button>
+                    <button class="action-btn" id="surpriseBtn">
+                        ✨ Surprise Me!
+                    </button>
+                    <button class="action-btn" id="letterBtn">
+                        💌 Read Love Letter
+                    </button>
+                </div>
+
+                <!-- Hidden Love Letter -->
+                <div class="love-letter hidden" id="loveLetter">
+                    <div class="letter-content">
+                        <h2>My Dearest ❤️</h2>
+                        <p>
+                            On this special day, I want you to know how incredibly lucky I am
+                            to have you in my life. You are the most amazing person I know,
+                            and every day with you is a blessing.
+                        </p>
+                        <p>
+                            Your smile lights up my darkest days, your laugh is my favorite sound,
+                            and your presence makes everything better. Thank you for being YOU.
+                        </p>
+                        <p>
+                            Here's to celebrating you today and every day. May all your dreams
+                            come true, and may this year bring you endless joy and happiness.
+                        </p>
+                        <p class="signature">
+                            With all my love,<br>
+                            Forever Yours 💕
+                        </p>
+                        <button class="close-letter" id="closeLetter">Close ✕</button>
+                    </div>
+                </div>
+
+                <!-- Audio Player (Hidden) -->
+                <audio id="birthdaySong" src="birthday_song.mp3" preload="auto" playsinline loop></audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fireworks Container -->
+    <div class="fireworks" id="fireworks"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
